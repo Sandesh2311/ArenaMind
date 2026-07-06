@@ -8,8 +8,6 @@
 
 ## 🏟️ AI-Powered Smart Stadium & Tournament Operations Platform
 
-# ArenaMind AI
-
 [![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![Gemini AI](https://img.shields.io/badge/Gemini-AI-8E75FF?logo=google&logoColor=white)](https://ai.google.dev/)
@@ -174,17 +172,3 @@ ArenaMind AI was developed as a focused submission package for PromptWars and is
 ## License
 
 This project is intended for educational, demo, and hackathon evaluation use. Please review local deployment and usage policies before production adoption.
-
-## 📸 Application Preview
-
-| Landing | Fan Dashboard |
-|----------|---------------|
-| image | image |
-
-| Organizer | Volunteer |
-|------------|------------|
-| image | image |
-
-| AI Assistant | Analytics |
-|--------------|-----------|
-| image | image |
