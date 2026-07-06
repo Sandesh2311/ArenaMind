@@ -7,10 +7,14 @@ import { architectureLayers, features, landingStats, testimonials } from '../dat
 import { MetricCard } from './ui/MetricCard.jsx';
 import { Section } from './ui/Section.jsx';
 
+/**
+ * Render the public ArenaMind landing experience.
+ * @returns {JSX.Element}
+ */
 export function LandingPage() {
   return (
-    <main>
-      <section className="grid-field min-h-[88vh] px-4 pb-12 pt-8 sm:px-6 lg:px-8">
+    <>
+      <header className="grid-field min-h-[88vh] px-4 pb-12 pt-8 sm:px-6 lg:px-8">
         <nav className="mx-auto flex max-w-7xl items-center justify-between py-4" aria-label="Primary">
           <a href="#home" className="flex items-center gap-3 text-white">
             <span className="grid h-11 w-11 place-items-center rounded-lg bg-arena-cyan text-slate-950">
@@ -87,7 +91,7 @@ export function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </header>
 
       <Section id="features" eyebrow="Main modules" title="Built for fans, organizers, volunteers, and on-ground staff.">
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -134,6 +138,6 @@ export function LandingPage() {
           ))}
         </div>
       </Section>
-    </main>
+    </>
   );
 }

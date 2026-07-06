@@ -10,7 +10,10 @@ const toneMap = Object.freeze({
 
 function MetricCardComponent({ label, value, trend, tone = 'cyan' }) {
   return (
-    <article className="glass rounded-lg p-5 transition duration-300 hover:-translate-y-1 hover:shadow-glow">
+    <article
+      className="glass rounded-lg p-5 transition duration-300 hover:-translate-y-1 hover:shadow-glow"
+      aria-label={`${label}: ${value}. Trend: ${trend}.`}
+    >
       <p className="text-sm text-slate-300">{label}</p>
       <div className="mt-3 flex items-end justify-between gap-3">
         <strong className="text-3xl font-bold text-white">{value}</strong>

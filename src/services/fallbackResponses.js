@@ -1,3 +1,6 @@
+import { buildCacheKey } from '../utils/cache.js';
+import { sanitizeDisplayText } from '../utils/validation.js';
+
 const responses = Object.freeze([
   {
     patterns: [/\bgate\s*b\b/i, /\bwhere\b.*\bgate\b/i],
@@ -59,7 +62,7 @@ const localResponseCache = new Map();
  * @returns {{source: 'local'|'none', text: string}}
  */
 export function getLocalResponse(prompt, role = 'fan') {
-  const cacheKey = `${role}:${prompt.toLowerCase()}`;
+  const cacheKey = buildCacheKey(role, prompt);
   const cached = localResponseCache.get(cacheKey);
   if (cached) {
     return cached;
@@ -91,5 +94,5 @@ export function getLocalResponse(prompt, role = 'fan') {
  */
 export function buildIntelligentFallback(prompt, role) {
   const base = roleFallback[role] ?? roleFallback.fan;
-  return `${base} I could not reach the remote model, so I used local venue intelligence for: "${prompt}".`;
+  return `${base} I could not reach the remote model, so I used local venue intelligence for: "${sanitizeDisplayText(prompt)}".`;
 }

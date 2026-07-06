@@ -1,31 +1,47 @@
 import { useCallback, useState } from 'react';
+import { ASSISTANT_FALLBACK_MESSAGE, STARTER_MESSAGES } from '../constants/assistant.js';
+import { validatePrompt } from '../utils/validation.js';
 
-const starterMessages = Object.freeze({
-  fan: 'Ask me about gates, seats, parking, food, washrooms, exits, or translation.',
-  organizer: 'Ask for queue mitigation, incident triage, resource allocation, or emergency recommendations.',
-  volunteer: 'Ask for task guidance, translation help, navigation, or escalation wording.'
-});
-
+/**
+ * Manage assistant conversation state and lazy-load the AI service only when a prompt is submitted.
+ * @param {'fan'|'organizer'|'volunteer'} role Active user role.
+ * @param {string} language Active response language.
+ * @returns {{messages: Array, isLoading: boolean, ask: Function}}
+ */
 export function useArenaAssistant(role, language) {
   const [messages, setMessages] = useState([
-    { id: 'welcome', from: 'ai', text: starterMessages[role], source: 'local' }
+    { id: 'welcome', from: 'ai', text: STARTER_MESSAGES[role], source: 'local' }
   ]);
   const [isLoading, setIsLoading] = useState(false);
 
   const ask = useCallback(
     async (prompt) => {
-      const userMessage = { id: crypto.randomUUID(), from: 'user', text: prompt };
+      const validation = validatePrompt(prompt);
+      if (!validation.ok) {
+        const answer = { text: validation.error, source: 'fallback' };
+        setMessages((current) => [...current, { id: crypto.randomUUID(), from: 'ai', ...answer }]);
+        return answer;
+      }
+
+      const userMessage = { id: crypto.randomUUID(), from: 'user', text: validation.value };
       setMessages((current) => [...current, userMessage]);
       setIsLoading(true);
 
-      const { askArenaMind } = await import('../services/geminiService.js');
-      const answer = await askArenaMind({ prompt, role, language });
-      setMessages((current) => [
-        ...current,
-        { id: crypto.randomUUID(), from: 'ai', text: answer.text, source: answer.source }
-      ]);
-      setIsLoading(false);
-      return answer;
+      try {
+        const { askArenaMind } = await import('../services/geminiService.js');
+        const answer = await askArenaMind({ prompt: validation.value, role, language });
+        setMessages((current) => [
+          ...current,
+          { id: crypto.randomUUID(), from: 'ai', text: answer.text, source: answer.source }
+        ]);
+        return answer;
+      } catch {
+        const answer = { text: ASSISTANT_FALLBACK_MESSAGE, source: 'fallback' };
+        setMessages((current) => [...current, { id: crypto.randomUUID(), from: 'ai', ...answer }]);
+        return answer;
+      } finally {
+        setIsLoading(false);
+      }
     },
     [language, role]
   );

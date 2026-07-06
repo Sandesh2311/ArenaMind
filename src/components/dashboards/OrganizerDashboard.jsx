@@ -1,56 +1,27 @@
 import PropTypes from 'prop-types';
-import { memo, useMemo } from 'react';
-import { AreaChart } from 'recharts/es6/chart/AreaChart';
-import { BarChart } from 'recharts/es6/chart/BarChart';
-import { Area } from 'recharts/es6/cartesian/Area';
-import { Bar } from 'recharts/es6/cartesian/Bar';
-import { CartesianGrid } from 'recharts/es6/cartesian/CartesianGrid';
-import { XAxis } from 'recharts/es6/cartesian/XAxis';
-import { YAxis } from 'recharts/es6/cartesian/YAxis';
-import { ResponsiveContainer } from 'recharts/es6/component/ResponsiveContainer';
-import { Tooltip } from 'recharts/es6/component/Tooltip';
-import { alerts, crowdZones, incidents, queueAnalytics, stats, volunteers } from '../../data/stadiumData.js';
+import { memo } from 'react';
+import {
+  emergencyActions,
+  genAiArchitectureNotes,
+  nextBestActions,
+  operationalInsights,
+  stats,
+  tournamentOperationsOverview
+} from '../../data/organizerCoreData.js';
 import { AIAssistant } from '../AIAssistant.jsx';
 import { MetricCard } from '../ui/MetricCard.jsx';
+import { CrowdHeatmapSection } from './organizer/CrowdHeatmapSection.jsx';
+import { IncidentDashboardSection } from './organizer/IncidentDashboardSection.jsx';
+import { LiveAlertsSection } from './organizer/LiveAlertsSection.jsx';
+import { QueueAnalyticsSection } from './organizer/QueueAnalyticsSection.jsx';
+import { VolunteerMonitoringSection } from './organizer/VolunteerMonitoringSection.jsx';
 
-const riskClassName = Object.freeze({
-  High: 'text-arena-coral',
-  Monitor: 'text-arena-gold',
-  Stable: 'text-arena-mint'
-});
-
-const alertClassName = Object.freeze({
-  coral: 'text-arena-coral',
-  cyan: 'text-arena-cyan',
-  mint: 'text-arena-mint'
-});
-
-const tooltipStyle = Object.freeze({
-  background: '#0f172a',
-  border: '1px solid rgba(255,255,255,0.14)',
-  color: '#fff'
-});
-
-const barRadius = Object.freeze([6, 6, 0, 0]);
-
-const emergencyActions = Object.freeze([
-  'Open Gate D2 overflow lane',
-  'Dispatch Medic 2 to Bay 112',
-  'Broadcast multilingual crowd advisory',
-  'Lock vehicle ingress at Lot P1'
-]);
-
+/**
+ * Render organizer command-center modules while delegating analytics sections to focused children.
+ * @param {{language: string, onLanguageChange: Function}} props Dashboard props.
+ * @returns {JSX.Element}
+ */
 function OrganizerDashboardComponent({ language, onLanguageChange }) {
-  const queueChartData = useMemo(() => queueAnalytics, []);
-  const volunteerResponseData = useMemo(
-    () =>
-      volunteers.map((volunteer) => ({
-        ...volunteer,
-        responseMinutes: Number.parseInt(volunteer.response, 10)
-      })),
-    []
-  );
-
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-4">
@@ -59,117 +30,85 @@ function OrganizerDashboardComponent({ language, onLanguageChange }) {
         ))}
       </div>
 
+      <section className="glass rounded-lg p-5" aria-labelledby="tournament-operations-title">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold uppercase text-arena-cyan">Organizers</p>
+            <h3 id="tournament-operations-title" className="mt-2 text-2xl font-bold text-white">
+              Tournament Operations Overview
+            </h3>
+          </div>
+          <span className="rounded-md bg-arena-mint/15 px-3 py-1 text-sm font-semibold text-arena-mint">
+            Real-time decision support
+          </span>
+        </div>
+
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {tournamentOperationsOverview.map((item) => (
+            <article key={item.label} className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-slate-300">{item.label}</p>
+              <strong className="mt-2 block text-2xl text-white">{item.value}</strong>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-5 grid gap-4 lg:grid-cols-3">
+          {nextBestActions.map((card) => (
+            <article key={card.title} className="rounded-lg border border-arena-cyan/25 bg-slate-950/50 p-4">
+              <p className="text-xs font-semibold uppercase text-arena-gold">AI Next Best Action</p>
+              <h4 className="mt-3 font-bold text-white">{card.title}</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{card.context}</p>
+              <p className="mt-3 text-sm font-semibold text-arena-cyan">{card.action}</p>
+              <p className="mt-2 text-sm text-slate-400">{card.impact}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <AIAssistant role="organizer" language={language} onLanguageChange={onLanguageChange} />
 
-      <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <section className="glass rounded-lg p-5" aria-labelledby="heatmap-title">
-          <h3 id="heatmap-title" className="text-2xl font-bold text-white">
-            Crowd heatmap
+      <div className="grid gap-6 lg:grid-cols-[1fr_0.85fr]">
+        <section className="glass rounded-lg p-5" aria-labelledby="operational-insights-title">
+          <h3 id="operational-insights-title" className="text-2xl font-bold text-white">
+            Operational Insights
           </h3>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {crowdZones.map((zone) => (
-              <article key={zone.zone} className="rounded-lg border border-white/10 bg-slate-950/60 p-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-white">{zone.zone}</h4>
-                  <span className={riskClassName[zone.risk]}>
-                    {zone.risk}
-                  </span>
-                </div>
-                <div className="mt-4 h-3 overflow-hidden rounded bg-white/10">
-                  <div className="h-full rounded bg-arena-cyan" style={{ width: `${zone.density}%` }} aria-hidden="true" />
-                </div>
-                <p className="mt-3 text-sm text-slate-300">
-                  {zone.density}% density, {zone.wait} min queue
-                </p>
+          <div className="mt-5 space-y-3">
+            {operationalInsights.map((insight) => (
+              <article key={insight} className="rounded-lg border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-300">
+                {insight}
               </article>
             ))}
           </div>
         </section>
 
-        <section className="glass rounded-lg p-5" aria-labelledby="queue-title">
-          <h3 id="queue-title" className="text-2xl font-bold text-white">
-            Queue analytics
+        <section className="glass rounded-lg p-5" aria-labelledby="genai-architecture-title">
+          <h3 id="genai-architecture-title" className="text-2xl font-bold text-white">
+            GenAI architecture status
           </h3>
-          <div className="mt-5 h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={queueChartData}>
-                <CartesianGrid stroke="rgba(255,255,255,0.08)" />
-                <XAxis dataKey="name" stroke="#cbd5e1" />
-                <YAxis stroke="#cbd5e1" />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Area type="monotone" dataKey="GateA" stroke="#35d6ff" fill="#35d6ff33" />
-                <Area type="monotone" dataKey="GateB" stroke="#facc15" fill="#facc1533" />
-                <Area type="monotone" dataKey="GateD" stroke="#fb7185" fill="#fb718533" />
-              </AreaChart>
-            </ResponsiveContainer>
+          <div className="mt-5 space-y-3">
+            {genAiArchitectureNotes.map((note) => (
+              <article key={note.label} className="rounded-lg border border-white/10 bg-slate-950/50 p-4">
+                <h4 className="font-bold text-white">{note.label}</h4>
+                <p className="mt-2 text-sm leading-6 text-slate-300">{note.detail}</p>
+              </article>
+            ))}
           </div>
         </section>
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+        <CrowdHeatmapSection />
+        <QueueAnalyticsSection />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-3">
-        <section className="glass rounded-lg p-5 xl:col-span-2" aria-labelledby="incident-title">
-          <h3 id="incident-title" className="text-2xl font-bold text-white">
-            Incident dashboard
-          </h3>
-          <div className="mt-5 overflow-x-auto">
-            <table className="w-full min-w-[640px] text-left text-sm">
-              <thead className="text-slate-400">
-                <tr>
-                  <th className="py-3">ID</th>
-                  <th>Area</th>
-                  <th>Severity</th>
-                  <th>Summary</th>
-                  <th>Owner</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/10">
-                {incidents.map((incident) => (
-                  <tr key={incident.id} className="text-slate-200">
-                    <td className="py-3 font-mono text-arena-cyan">{incident.id}</td>
-                    <td>{incident.area}</td>
-                    <td>{incident.severity}</td>
-                    <td>{incident.summary}</td>
-                    <td>{incident.owner}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="glass rounded-lg p-5" aria-labelledby="alerts-title">
-          <h3 id="alerts-title" className="text-2xl font-bold text-white">
-            Live alerts
-          </h3>
-          <div className="mt-5 space-y-3">
-            {alerts.map((alert) => (
-              <article key={alert.text} className="rounded-lg border border-white/10 bg-white/5 p-4">
-                <alert.icon className={alertClassName[alert.tone]} size={22} aria-hidden="true" />
-                <p className="mt-3 text-sm leading-6 text-slate-200">{alert.text}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        <IncidentDashboardSection />
+        <LiveAlertsSection />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="glass rounded-lg p-5" aria-labelledby="volunteer-monitor-title">
-          <h3 id="volunteer-monitor-title" className="text-2xl font-bold text-white">
-            Volunteer monitoring
-          </h3>
-          <div className="mt-5 h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={volunteerResponseData}>
-                <CartesianGrid stroke="rgba(255,255,255,0.08)" />
-                <XAxis dataKey="name" stroke="#cbd5e1" />
-                <YAxis stroke="#cbd5e1" />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Bar dataKey="responseMinutes" name="Response minutes" fill="#4ade80" radius={barRadius} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-
+        <VolunteerMonitoringSection />
         <section className="glass rounded-lg p-5" aria-labelledby="emergency-title">
           <h3 id="emergency-title" className="text-2xl font-bold text-white">
             Emergency control panel

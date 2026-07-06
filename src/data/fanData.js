@@ -4,6 +4,7 @@ import Coffee from 'lucide-react/dist/esm/icons/coffee';
 import MapPinned from 'lucide-react/dist/esm/icons/map-pinned';
 import Ticket from 'lucide-react/dist/esm/icons/ticket';
 import Waves from 'lucide-react/dist/esm/icons/waves';
+import { crowdZones, queueAnalytics } from './organizerAnalyticsData.js';
 
 export const fanTools = Object.freeze([
   { icon: Ticket, title: 'Seat Finder', detail: 'Section 214, Row H, Seat 18 via Gate B' },
@@ -41,3 +42,28 @@ export const routeCards = Object.freeze([
     steps: ['Exit aisle toward Bay 112', 'Turn left at hydration kiosk', 'Continue to red medical signage', 'Report to M2 triage desk']
   }
 ]);
+
+const latestQueueSnapshot = queueAnalytics.at(-1);
+const lowestGateQueue = Object.entries(latestQueueSnapshot)
+  .filter(([key]) => key !== 'name')
+  .sort(([, waitA], [, waitB]) => waitA - waitB)
+  .at(0);
+const leastDenseZone = [...crowdZones].sort((zoneA, zoneB) => zoneA.density - zoneB.density).at(0);
+
+export const fanRecommendations = Object.freeze({
+  matchDayTips: [
+    `Use ${lowestGateQueue[0].replace('Gate', 'Gate ')} for faster entry; current simulated wait is ${lowestGateQueue[1]} minutes.`,
+    'Keep your ticket QR ready before the security lane to reduce gate dwell time.',
+    'Visit concessions before halftime because North Concourse demand is expected to rise.'
+  ],
+  navigation: [
+    'For Section 214, take Gate B to Level 2, then turn at Bay 208.',
+    `If Gate D feels crowded, reroute through ${leastDenseZone.zone} and follow cyan wayfinding signs.`,
+    'For medical help near Section 110, use the short route to Medical Point M2.'
+  ],
+  queueAvoidance: [
+    'Avoid Gate D during the next arrival wave; it remains the longest queue zone.',
+    'Choose North Market only for quick pickups and use South Market for larger groups.',
+    'Families should use the Gate D priority lane only when directed by staff.'
+  ]
+});

@@ -20,10 +20,14 @@ React + Vite UI
 ## Features
 
 - Fan dashboard with seat finder, parking, food, washrooms, exits, lost and found, schedule, and route cards.
+- Fan AI guidance with personalized match-day tips, navigation recommendations, and queue avoidance suggestions.
 - Organizer dashboard with crowd heatmap, queue analytics, incidents, volunteers, alerts, emergency controls, and decision support AI.
-- Volunteer dashboard with assigned tasks, emergency requests, translation help, navigation, and communications.
+- Tournament Operations Overview for organizers with active incidents, crowd density summary, volunteer availability, queue status, and recommended AI actions.
+- AI-generated Next Best Action cards and Operational Insights derived from simulated stadium conditions.
+- Volunteer dashboard with assigned tasks, AI task prioritization, emergency routing, translation help, navigation, and communications.
 - Multilingual assistant modes for English, Hindi, Spanish, French, Portuguese, and Arabic.
 - Local fallback responses for common FAQs so routine questions never call Gemini.
+- Visible GenAI architecture status explaining local AI, Gemini usage, and deterministic fallback behavior.
 - Dark glassmorphism SaaS UI with responsive layouts, charts, accessible controls, and keyboard focus states.
 
 ## Screenshots
@@ -68,3 +72,19 @@ Deploy on Vercel as a Vite application. Configure `VITE_GEMINI_API_KEY` as a Ver
 - Staff radio and ticketing system connectors.
 - Audit logging for emergency actions.
 - Role-based authentication and permission policies.
+
+## Challenge Requirement Mapping
+
+| Challenge Requirement | ArenaMind Feature |
+|-----------------------|-------------------|
+| Smart Stadiums | Unified venue command center, fan service finder, staff routing, and stadium simulation data. |
+| Tournament Operations | Tournament Operations Overview with active incidents, density, volunteer availability, queue status, and AI actions. |
+| GenAI-enabled Architecture | Hybrid local AI, Gemini escalation, cache, and role-aware fallback behavior shown in the app and architecture docs. |
+| Crowd Management | Crowd heatmap, queue analytics, live alerts, queue avoidance suggestions, and Gate D risk recommendations. |
+| Indoor Navigation | Fan route cards, staff emergency routes, gate-to-seat guidance, and alternate path recommendations. |
+| Real-time Decision Support | AI Next Best Action cards, Operational Insights, live alerts, and emergency controls. |
+| Multi-language Assistance | Assistant language selector plus volunteer translation suggestions for English, Hindi, Spanish, French, Portuguese, and Arabic. |
+| Fans | Fan dashboard with services, match schedule, personalized tips, navigation, and queue avoidance. |
+| Organizers | Organizer dashboard with command metrics, tournament overview, operational insights, incidents, and volunteers. |
+| Volunteers | Volunteer dashboard with AI task prioritization, emergency routing, language help, assigned tasks, and communications. |
+| On-ground Staff | Staff navigation, emergency routes, incident escalation, communication panel, and command-center dispatch recommendations. |

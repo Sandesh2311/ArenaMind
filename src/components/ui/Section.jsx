@@ -1,5 +1,10 @@
 import PropTypes from 'prop-types';
 
+/**
+ * Page section wrapper used by landing content to keep spacing and width consistent.
+ * @param {object} props Section props.
+ * @returns {JSX.Element}
+ */
 export function Section({ id, eyebrow, title, children, className = '' }) {
   return (
     <section id={id} className={`px-4 py-16 sm:px-6 lg:px-8 ${className}`}>

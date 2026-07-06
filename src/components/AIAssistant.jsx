@@ -3,16 +3,9 @@ import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 import PropTypes from 'prop-types';
 import { memo, useCallback, useState } from 'react';
 import { LANGUAGES } from '../constants/app.js';
+import { ASSISTANT_EXAMPLES } from '../constants/assistant.js';
 import { useArenaAssistant } from '../hooks/useArenaAssistant.js';
-
-const examples = Object.freeze([
-  'Where is Gate B?',
-  'Find my seat',
-  'Nearest washroom',
-  'Translate to Spanish',
-  'What is the waiting time?',
-  'Emergency near Gate D'
-]);
+import { MAX_QUERY_LENGTH, validateLanguage } from '../utils/validation.js';
 
 function AIAssistantComponent({ role, language, onLanguageChange }) {
   const [prompt, setPrompt] = useState('');
@@ -30,7 +23,7 @@ function AIAssistantComponent({ role, language, onLanguageChange }) {
 
   const handleLanguageChange = useCallback(
     (event) => {
-      onLanguageChange(event.target.value);
+      onLanguageChange(validateLanguage(event.target.value).value);
     },
     [onLanguageChange]
   );
@@ -61,7 +54,13 @@ function AIAssistantComponent({ role, language, onLanguageChange }) {
         </label>
       </div>
 
-      <div className="mt-5 max-h-72 space-y-3 overflow-y-auto rounded-lg border border-white/10 bg-slate-950/40 p-3" aria-live="polite">
+      <div
+        className="mt-5 max-h-72 space-y-3 overflow-y-auto rounded-lg border border-white/10 bg-slate-950/40 p-3"
+        role="log"
+        aria-live="polite"
+        aria-relevant="additions text"
+        aria-label="ArenaMind assistant conversation"
+      >
         {messages.map((message) => (
           <div key={message.id} className={`flex ${message.from === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div
@@ -74,11 +73,15 @@ function AIAssistantComponent({ role, language, onLanguageChange }) {
             </div>
           </div>
         ))}
-        {isLoading && <p className="text-sm text-slate-300">ArenaMind is analyzing venue context...</p>}
+        {isLoading && (
+          <p className="text-sm text-slate-300" role="status">
+            ArenaMind is analyzing venue context...
+          </p>
+        )}
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {examples.map((example) => (
+        {ASSISTANT_EXAMPLES.map((example) => (
           <button
             key={example}
             type="button"
@@ -94,13 +97,21 @@ function AIAssistantComponent({ role, language, onLanguageChange }) {
         <label className="sr-only" htmlFor={`${role}-assistant-prompt`}>
           Ask ArenaMind
         </label>
+        <p id={`${role}-assistant-prompt-help`} className="sr-only">
+          Enter a stadium operations question. Validation messages appear in the assistant conversation.
+        </p>
         <input
           id={`${role}-assistant-prompt`}
           value={prompt}
           onChange={(event) => setPrompt(event.target.value)}
+          maxLength={MAX_QUERY_LENGTH}
           className="min-h-12 flex-1 rounded-md border border-white/15 bg-slate-950/70 px-4 text-white placeholder:text-slate-500"
           placeholder="Ask about routes, queues, incidents, translation..."
+          aria-describedby={`${role}-assistant-prompt-help ${role}-assistant-prompt-count`}
         />
+        <span id={`${role}-assistant-prompt-count`} className="sr-only">
+          {prompt.length} of {MAX_QUERY_LENGTH} characters used.
+        </span>
         <button
           type="submit"
           disabled={isLoading}
