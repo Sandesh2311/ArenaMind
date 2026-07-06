@@ -85,4 +85,22 @@ describe('useArenaAssistant', () => {
     expect(answer.text).toMatch(/temporarily unavailable/i);
     expect(result.current.messages.at(-1).text).toMatch(/temporarily unavailable/i);
   });
+
+  it('coalesces overlapping submissions while a request is already in flight', async () => {
+    const askArenaMind = vi.fn(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 30));
+      return { text: 'resolved', source: 'gemini' };
+    });
+
+    vi.resetModules();
+    vi.doMock('../services/geminiService.js', () => ({ askArenaMind }));
+    const { useArenaAssistant: useIsolatedAssistant } = await import('./useArenaAssistant.js');
+    const { result } = renderHook(() => useIsolatedAssistant('fan', 'English'));
+
+    await act(async () => {
+      await Promise.all([result.current.ask('Where is Gate B?'), result.current.ask('Where are the bathrooms?')]);
+    });
+
+    expect(askArenaMind).toHaveBeenCalledTimes(1);
+  });
 });

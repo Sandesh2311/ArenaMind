@@ -1,53 +1,82 @@
 # Architecture
 
-ArenaMind AI uses a modular React architecture shaped around venue operations.
+ArenaMind AI is structured as a layered frontend architecture that separates presentation, interaction state, domain data, and AI orchestration. This separation makes the application easier to review, test, and evolve into a larger operational platform.
 
-## Layers
+## High-Level Architecture
 
 ```text
-src/
-  components/        Shared UI, landing page, dashboards
-  constants/         App-wide constants and Gemini endpoint
-  data/              Stadium simulation data and operational content
-  hooks/             React hooks for assistant state
-  services/          Gemini and local fallback orchestration
-  styles/            Tailwind entry and global CSS
-  test/              Test setup
-  utils/             Validation and pure helpers
+User Interaction
+  -> React UI layer
+      -> Dashboard components
+      -> Assistant experience
+      -> Shared UI primitives
+  -> State and preference hooks
+  -> Service layer
+      -> Validation utilities
+      -> Local FAQ response routing
+      -> Gemini gateway
+      -> Safe fallback engine
+  -> Static venue simulation data
 ```
+
+![Architecture diagram placeholder](screenshots/architecture-diagram.png)
+
+## Component Diagram
+
+```text
+App
+  -> LandingPage
+  -> RoleTabs
+  -> FanDashboard
+  -> OrganizerDashboard
+  -> VolunteerDashboard
+  -> AIAssistant
+      -> useArenaAssistant
+      -> geminiService
+      -> fallbackResponses
+      -> validation utilities
+```
+
+## Service Layer
+
+The service layer is intentionally thin and focused on a small set of responsibilities:
+
+- Validation and sanitization of prompt, role, and language inputs
+- Local routing for common stadium requests
+- Optional Gemini calls for complex prompt handling
+- Deterministic fallback generation when remote AI is unavailable
+- Response caching for repeated requests in-session
 
 ## AI Flow
 
-1. The assistant validates and normalizes input.
-2. Common stadium FAQs are answered by `getLocalResponse`.
-3. Complex prompts call Gemini only when `VITE_GEMINI_API_KEY` is configured.
-4. Failed or unavailable model calls return role-aware fallback guidance.
+1. The assistant receives a user prompt and validates it.
+2. The request is checked against local response patterns for high-confidence stadium FAQ content.
+3. If no local match is found and a Gemini API key is configured, the prompt is sent to the remote model.
+4. If the remote model fails, times out, or returns an invalid payload, the system falls back to local venue intelligence.
+5. The final response is returned to the UI with a source tag of local, gemini, or fallback.
 
-This reduces cost and latency while preserving graceful offline behavior.
+## Request Lifecycle
 
-## GenAI Decision Boundaries
+A request moves through the application in a predictable order:
 
-- Local AI is used for deterministic stadium FAQs, fan queue guidance, indoor navigation recommendations, organizer overview cards, Next Best Actions, Operational Insights, and volunteer task guidance.
-- Gemini is used for complex free-form reasoning after local matching fails and only when a configured API key is available.
-- Fallback behavior is deterministic: unavailable Gemini calls return role-aware guidance from local simulated venue intelligence instead of blank or random output.
-- Contextual recommendations are generated from `crowdZones`, `queueAnalytics`, `incidents`, and `volunteers`, so the product remains aligned with real-time decision support even without network access.
+1. The user enters a prompt in the AI assistant.
+2. The hook layer captures the interaction and updates the local conversation state.
+3. The service layer validates the input and chooses the best response strategy.
+4. The chosen response is rendered back to the user with accessible status and logging semantics.
+5. Repeated prompts can reuse cached results for faster response times.
+
+## Gemini Fallback Flow
+
+```text
+User Prompt
+  -> Validation
+  -> Local FAQ check
+  -> If match: return local response
+  -> If no match and API key exists: call Gemini
+  -> If Gemini fails: use intelligent fallback
+  -> Return safe, role-aware response
+```
 
 ## Data Flow
 
-Dashboards use static operational simulation data from `src/data/fanData.js`, `src/data/volunteerData.js`, `src/data/organizerCoreData.js`, and `src/data/organizerAnalyticsData.js`. This keeps the hackathon deliverable self-contained while leaving a clear path for live telemetry adapters.
-
-## PromptWars Main Challenge 4 Mapping
-
-| Requirement | Implementation |
-|-------------|----------------|
-| Smart Stadiums | Role dashboards combine fan services, staff routes, incidents, queues, and venue-wide operational state. |
-| Tournament Operations | Organizer Tournament Operations Overview summarizes incidents, density, volunteers, queues, and recommended actions. |
-| GenAI-enabled Architecture | Hybrid local AI, Gemini escalation, caching, validation, and deterministic fallback are implemented in `src/services/`. |
-| Crowd Management | Crowd heatmap, live alerts, queue analytics, Gate D risk actions, and fan queue avoidance cards. |
-| Indoor Navigation | Route cards for fans, staff emergency routes, seat guidance, medical route guidance, and alternate gate recommendations. |
-| Real-time Decision Support | AI Next Best Action cards, Operational Insights, emergency controls, and role-specific assistant answers. |
-| Multi-language Assistance | Language selector, multilingual assistant context, and volunteer language assistance suggestions. |
-| Fans | Fan dashboard includes match-day tips, service finder, schedule, navigation, and queue avoidance. |
-| Organizers | Organizer dashboard includes command metrics, tournament overview, incidents, alerts, volunteers, and AI insights. |
-| Volunteers | Volunteer dashboard includes assigned tasks, AI prioritization, emergency routing, language help, and quick actions. |
-| On-ground Staff | Staff-facing routes, escalation guidance, communication panel, and dispatch recommendations support ground teams. |
+Dashboards consume structured simulation data from the data layer, including fan services, organizer incident state, volunteer work items, queue analytics, and crowd density information. This creates a reliable demo foundation while leaving clear extensibility points for future live telemetry integration.

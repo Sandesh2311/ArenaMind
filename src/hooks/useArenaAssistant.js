@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { ASSISTANT_FALLBACK_MESSAGE, STARTER_MESSAGES } from '../constants/assistant.js';
 import { validatePrompt } from '../utils/validation.js';
 
@@ -13,6 +13,7 @@ export function useArenaAssistant(role, language) {
     { id: 'welcome', from: 'ai', text: STARTER_MESSAGES[role], source: 'local' }
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const pendingRequestRef = useRef(false);
 
   const ask = useCallback(
     async (prompt) => {
@@ -23,9 +24,14 @@ export function useArenaAssistant(role, language) {
         return answer;
       }
 
+      if (pendingRequestRef.current) {
+        return { text: 'ArenaMind is already processing a request.', source: 'fallback' };
+      }
+
       const userMessage = { id: crypto.randomUUID(), from: 'user', text: validation.value };
       setMessages((current) => [...current, userMessage]);
       setIsLoading(true);
+      pendingRequestRef.current = true;
 
       try {
         const { askArenaMind } = await import('../services/geminiService.js');
@@ -41,6 +47,7 @@ export function useArenaAssistant(role, language) {
         return answer;
       } finally {
         setIsLoading(false);
+        pendingRequestRef.current = false;
       }
     },
     [language, role]

@@ -1,41 +1,56 @@
 # Code Quality
 
-## Architecture Principles
+ArenaMind AI is structured to reflect strong engineering hygiene without over-engineering the hackathon scope. The codebase favors clear boundaries, predictable state ownership, and maintainable component composition.
 
-- Keep UI components focused on rendering and local interaction only.
-- Keep cross-cutting state in hooks.
-- Keep AI, validation, and fallback routing in services/utilities.
-- Prefer role-specific data modules over aggregate data files.
-- Preserve lazy-loading boundaries for dashboards, AI service code, and chart-heavy modules.
+## SOLID Principles
 
-## Folder Responsibilities
+- Single Responsibility: individual components and hooks own a narrow piece of UI or state behavior.
+- Open/Closed: new dashboard modules can be added without rewriting the shared shell.
+- Liskov Substitution: reusable UI primitives and hooks are designed to be swapped or extended safely.
+- Interface Segregation: services expose focused responsibilities such as validation, fallback generation, or remote AI orchestration.
+- Dependency Inversion: the UI depends on stable abstractions such as hooks and service interfaces rather than hard-coded implementation details.
 
-- `src/components`: Reusable UI, landing page, and role dashboards.
-- `src/components/dashboards/organizer`: Focused organizer analytics sections.
-- `src/hooks`: Reusable React state and interaction logic.
-- `src/services`: AI orchestration and fallback response services.
-- `src/utils`: Pure helpers such as validation and cache-key generation.
-- `src/constants`: Stable application and assistant configuration.
-- `src/data`: Static venue, role, and analytics data.
+## Component Design
 
-## Design Decisions
+Components are organized around clarity and role-based separation. The main dashboards coordinate role-specific data and behavior, while shared UI primitives in the UI folder remain reusable and presentation-focused.
 
-- Dashboard role and language state live in `useDashboardPreferences`.
-- Assistant conversation state lives in `useArenaAssistant`; Gemini code is dynamically imported only when a prompt is submitted.
-- Organizer analytics sections are split into child components to keep `OrganizerDashboard` as a coordinator.
-- Local FAQ routing remains separate from Gemini orchestration so common questions never require a model call.
+## Hooks
 
-## Refactoring Summary
+The hook layer is responsible for stateful behavior that is shared across the experience:
 
-- Removed duplicated aggregate stadium data in favor of role-specific data modules.
-- Extracted organizer heatmap, queue analytics, incidents, alerts, and volunteer monitoring sections.
-- Added ESLint 9 flat config and React Hooks validation.
-- Added cache-key utility to avoid duplicated cache string construction.
-- Added JSDoc to exported hooks, services, utilities, and complex components.
+- `useArenaAssistant` manages conversation state and lazy-loads the AI service only when needed.
+- `useDashboardPreferences` centralizes role and language state for the dashboard shell.
 
-## Maintainability Strategy
+This keeps UI components simpler and ensures that state transitions are testable in isolation.
 
-- Add new role modules under the role dashboard folder and keep shared UI in `components/ui`.
-- Add new assistant routing rules inside `fallbackResponses.js` without coupling them to Gemini.
-- Keep new constants either global in `constants` or local to the module that owns the behavior.
-- Run `npm run lint`, `npm test`, and `npm run build` before release.
+## Folder Organization
+
+The repository uses a predictable structure:
+
+- `src/components` for presentation and dashboard composition
+- `src/components/dashboards/organizer` for organizer-specific sections
+- `src/hooks` for shared stateful logic
+- `src/services` for AI orchestration and fallback logic
+- `src/utils` for validation and caching helpers
+- `src/constants` for shared configuration
+- `src/data` for scenario-driven content and simulation data
+
+## Maintainability
+
+The codebase emphasizes maintainability through:
+
+- Small, focused modules
+- Clear separation of business logic from presentation
+- Reusable utilities and hooks
+- Strong test coverage around critical paths
+- Consistent naming and documentation for exported entities
+
+## Release Quality Checklist
+
+Before shipping a new revision, the project should confirm:
+
+```bash
+npm run lint
+npm test
+npm run build
+```
