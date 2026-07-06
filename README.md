@@ -1,10 +1,12 @@
-# ArenaMind AI
+# 🏟️ ArenaMind AI
 
-🚀 Live Demo: https://arena-mind-olive.vercel.app/
+AI-Powered Smart Stadium & Tournament Operations Platform
 
-📂 Repository: https://github.com/Sandesh2311/ArenaMind
+🚀 Live Demo:
+https://arena-mind-olive.vercel.app
 
----
+📂 Repository:
+https://github.com/Sandesh2311/ArenaMind
 
 ## 🏟️ AI-Powered Smart Stadium & Tournament Operations Platform
 
@@ -27,6 +29,7 @@ ArenaMind AI brings together a modern React frontend, a hybrid AI service layer,
 Modern stadium operations depend on fast, coordinated action across multiple roles during peak events. Operators need to balance crowd flow, queue pressure, incidents, communications, and safety decisions in real time. ArenaMind AI addresses this challenge by presenting role-specific dashboards and a guided AI assistant that can answer common requests locally, escalate complex reasoning to Gemini when available, and fall back safely when the model is unavailable.
 
 ## Application Preview
+![ Mobile Experience](screenshots/responsive.jpeg)
 
 ### Hero Experience
 
@@ -49,11 +52,6 @@ Modern stadium operations depend on fast, coordinated action across multiple rol
 | Indoor Navigation | ![Indoor Navigation](screenshots/navigation.png) |
 | Emergency Dashboard | ![Emergency Dashboard](screenshots/emergency-dashboard.png) |
 
-## GIF Placeholders
-
-- Role switching
-- AI Assistant
-- Dashboard navigation
 
 ## Architecture
 
@@ -167,7 +165,13 @@ The application is optimized for responsiveness by keeping common prompts local,
 
 ## Contributors
 
-ArenaMind AI was developed as a focused submission package for PromptWars and is structured for professional review, iteration, and future scaling.
+Developed by
+
+Sandesh Mishra
+
+PromptWars Virtual 2026
+
+Google for Developers × Hack2Skill
 
 ## License
 
