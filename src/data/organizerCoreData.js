@@ -72,6 +72,15 @@ export const operationalInsights = Object.freeze([
   'Fan-facing guidance should recommend Gate C, North Market only for short visits, and alternate indoor routes before kickoff.'
 ]);
 
+export const tournamentSupportModules = Object.freeze([
+  { label: 'Multi Stadium Status', value: '3/4 ready', detail: 'Main Bowl, Fan Zone, and Transit Hub are operational.' },
+  { label: 'Tournament Operations Center', value: 'Priority 1', detail: 'Crowd balancing and incident containment remain the top focus.' },
+  { label: 'Team Arrival Status', value: 'On time', detail: 'Arrival windows remain aligned with the match-day schedule.' },
+  { label: 'Shuttle Coordination', value: 'Stable', detail: 'Shuttle loops are maintaining expected transfer times.' },
+  { label: 'Emergency Coordination', value: 'Active', detail: 'Medical and crowd-control teams remain synchronized.' },
+  { label: 'Accessibility Assistance', value: 'Ready', detail: 'Queues and wayfinding support are available across key concourses.' }
+]);
+
 export const genAiArchitectureNotes = Object.freeze([
   {
     label: 'Local AI',

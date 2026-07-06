@@ -42,6 +42,14 @@ describe('dashboard workflows', () => {
     expect(screen.getByRole('row', { name: /INC-2041 Gate D High/i })).toBeInTheDocument();
   });
 
+  it('renders lightweight tournament operations support modules for organizers', () => {
+    render(<OrganizerDashboard language="English" onLanguageChange={vi.fn()} />);
+
+    expect(screen.getByRole('heading', { name: /Tournament Operations Center/i })).toBeInTheDocument();
+    expect(screen.getByText(/Multi Stadium Status/i)).toBeInTheDocument();
+    expect(screen.getByText(/Accessibility Assistance/i)).toBeInTheDocument();
+  });
+
   it('renders volunteer task priorities, translation helper, and accessible route workflow', async () => {
     const user = userEvent.setup();
     render(<VolunteerDashboard language="English" onLanguageChange={vi.fn()} />);

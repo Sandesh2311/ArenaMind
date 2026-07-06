@@ -6,7 +6,8 @@ import {
   nextBestActions,
   operationalInsights,
   stats,
-  tournamentOperationsOverview
+  tournamentOperationsOverview,
+  tournamentSupportModules
 } from '../../data/organizerCoreData.js';
 import { AIAssistant } from '../AIAssistant.jsx';
 import { MetricCard } from '../ui/MetricCard.jsx';
@@ -67,6 +68,30 @@ function OrganizerDashboardComponent({ language, onLanguageChange }) {
       </section>
 
       <AIAssistant role="organizer" language={language} onLanguageChange={onLanguageChange} />
+
+      <section className="glass rounded-lg p-5" aria-labelledby="tournament-support-title">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold uppercase text-arena-cyan">Tournament support</p>
+            <h3 id="tournament-support-title" className="mt-2 text-2xl font-bold text-white">
+              Tournament Operations Center
+            </h3>
+          </div>
+          <span className="rounded-md bg-arena-mint/15 px-3 py-1 text-sm font-semibold text-arena-mint">
+            Match-day coordination
+          </span>
+        </div>
+
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {tournamentSupportModules.map((module) => (
+            <article key={module.label} className="rounded-lg border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-slate-300">{module.label}</p>
+              <strong className="mt-2 block text-xl text-white">{module.value}</strong>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{module.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_0.85fr]">
         <section className="glass rounded-lg p-5" aria-labelledby="operational-insights-title">
