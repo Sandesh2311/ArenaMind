@@ -10,8 +10,8 @@ describe('App', () => {
 
     expect(screen.getByRole('heading', { name: 'ArenaMind AI' })).toBeInTheDocument();
     await user.click(screen.getByRole('tab', { name: 'Organizer' }));
-    expect(screen.getByRole('heading', { name: /Crowd heatmap/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Crowd heatmap/i }, { timeout: 15000 })).toBeInTheDocument();
     await user.click(screen.getByRole('tab', { name: 'Volunteer' }));
-    expect(screen.getByRole('heading', { name: /Assigned tasks/i })).toBeInTheDocument();
-  });
+    expect(await screen.findByRole('heading', { name: /Assigned tasks/i }, { timeout: 15000 })).toBeInTheDocument();
+  }, 20000);
 });

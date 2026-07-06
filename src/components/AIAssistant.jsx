@@ -1,28 +1,39 @@
-import { Send, Sparkles } from 'lucide-react';
+import Send from 'lucide-react/dist/esm/icons/send';
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { LANGUAGES } from '../constants/app.js';
 import { useArenaAssistant } from '../hooks/useArenaAssistant.js';
 
-const examples = [
+const examples = Object.freeze([
   'Where is Gate B?',
   'Find my seat',
   'Nearest washroom',
   'Translate to Spanish',
   'What is the waiting time?',
   'Emergency near Gate D'
-];
+]);
 
-export function AIAssistant({ role, language, onLanguageChange }) {
+function AIAssistantComponent({ role, language, onLanguageChange }) {
   const [prompt, setPrompt] = useState('');
   const { messages, isLoading, ask } = useArenaAssistant(role, language);
 
-  const submit = async (event) => {
-    event.preventDefault();
-    const current = prompt;
-    setPrompt('');
-    await ask(current);
-  };
+  const submit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const current = prompt;
+      setPrompt('');
+      await ask(current);
+    },
+    [ask, prompt]
+  );
+
+  const handleLanguageChange = useCallback(
+    (event) => {
+      onLanguageChange(event.target.value);
+    },
+    [onLanguageChange]
+  );
 
   return (
     <section className="glass rounded-lg p-5" aria-label="AI Stadium Assistant">
@@ -37,7 +48,7 @@ export function AIAssistant({ role, language, onLanguageChange }) {
           <span className="mb-2 block">Language</span>
           <select
             value={language}
-            onChange={(event) => onLanguageChange(event.target.value)}
+            onChange={handleLanguageChange}
             className="min-h-11 rounded-md border border-white/15 bg-slate-950/80 px-3 text-white"
             aria-label="Assistant language"
           >
@@ -103,8 +114,10 @@ export function AIAssistant({ role, language, onLanguageChange }) {
   );
 }
 
-AIAssistant.propTypes = {
+AIAssistantComponent.propTypes = {
   role: PropTypes.oneOf(['fan', 'organizer', 'volunteer']).isRequired,
   language: PropTypes.string.isRequired,
   onLanguageChange: PropTypes.func.isRequired
 };
+
+export const AIAssistant = memo(AIAssistantComponent);

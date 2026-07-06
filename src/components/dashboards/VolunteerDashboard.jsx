@@ -1,16 +1,20 @@
-import { MessageSquare, Navigation, Radio, ShieldAlert } from 'lucide-react';
+import MessageSquare from 'lucide-react/dist/esm/icons/message-square';
+import Navigation from 'lucide-react/dist/esm/icons/navigation';
+import Radio from 'lucide-react/dist/esm/icons/radio';
+import ShieldAlert from 'lucide-react/dist/esm/icons/shield-alert';
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 import { routeCards, volunteerTasks } from '../../data/stadiumData.js';
 import { AIAssistant } from '../AIAssistant.jsx';
 
-const quickHelp = [
+const quickHelp = Object.freeze([
   { icon: ShieldAlert, label: 'Escalate emergency', detail: 'Send location, severity, and crowd condition to command.' },
   { icon: MessageSquare, label: 'Translation assistant', detail: 'Convert fan guidance into English, Hindi, Spanish, French, Portuguese, or Arabic.' },
   { icon: Navigation, label: 'Navigation', detail: 'Find fastest staff route to gate, bay, medical point, or lost and found.' },
   { icon: Radio, label: 'Communication panel', detail: 'Broadcast concise status updates to team channel.' }
-];
+]);
 
-export function VolunteerDashboard({ language, onLanguageChange }) {
+function VolunteerDashboardComponent({ language, onLanguageChange }) {
   return (
     <div className="space-y-6">
       <AIAssistant role="volunteer" language={language} onLanguageChange={onLanguageChange} />
@@ -69,7 +73,9 @@ export function VolunteerDashboard({ language, onLanguageChange }) {
   );
 }
 
-VolunteerDashboard.propTypes = {
+VolunteerDashboardComponent.propTypes = {
   language: PropTypes.string.isRequired,
   onLanguageChange: PropTypes.func.isRequired
 };
+
+export const VolunteerDashboard = memo(VolunteerDashboardComponent);

@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { lazy, Suspense, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { LandingPage } from './components/LandingPage.jsx';
-import { FanDashboard } from './components/dashboards/FanDashboard.jsx';
-import { OrganizerDashboard } from './components/dashboards/OrganizerDashboard.jsx';
-import { VolunteerDashboard } from './components/dashboards/VolunteerDashboard.jsx';
 import { RoleTabs } from './components/ui/RoleTabs.jsx';
+
+const FanDashboard = lazy(() =>
+  import('./components/dashboards/FanDashboard.jsx').then((module) => ({ default: module.FanDashboard }))
+);
+const OrganizerDashboard = lazy(() =>
+  import('./components/dashboards/OrganizerDashboard.jsx').then((module) => ({ default: module.OrganizerDashboard }))
+);
+const VolunteerDashboard = lazy(() =>
+  import('./components/dashboards/VolunteerDashboard.jsx').then((module) => ({ default: module.VolunteerDashboard }))
+);
 
 function DashboardRenderer({ activeRole, language, onLanguageChange }) {
   if (activeRole === 'organizer') {
@@ -27,6 +34,8 @@ DashboardRenderer.propTypes = {
 export default function App() {
   const [activeRole, setActiveRole] = useState('fan');
   const [language, setLanguage] = useState('English');
+  const handleRoleChange = useCallback((role) => setActiveRole(role), []);
+  const handleLanguageChange = useCallback((value) => setLanguage(value), []);
 
   return (
     <div className="min-h-screen">
@@ -38,9 +47,17 @@ export default function App() {
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-arena-cyan">Role dashboards</p>
               <h2 className="mt-3 text-3xl font-bold text-white md:text-5xl">One platform, three operational views.</h2>
             </div>
-            <RoleTabs activeRole={activeRole} onChange={setActiveRole} />
+            <RoleTabs activeRole={activeRole} onChange={handleRoleChange} />
           </div>
-          <DashboardRenderer activeRole={activeRole} language={language} onLanguageChange={setLanguage} />
+          <Suspense
+            fallback={
+              <div className="glass rounded-lg p-5 text-sm text-slate-300" role="status">
+                Loading dashboard...
+              </div>
+            }
+          >
+            <DashboardRenderer activeRole={activeRole} language={language} onLanguageChange={handleLanguageChange} />
+          </Suspense>
         </div>
       </section>
     </div>

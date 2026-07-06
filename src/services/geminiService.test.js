@@ -40,7 +40,7 @@ describe('geminiService', () => {
     import.meta.env.VITE_GEMINI_API_KEY = '';
 
     const answer = await askArenaMind({
-      prompt: 'Generate a staffing plan for the next hour using all current venue signals.',
+      prompt: 'Generate an evacuation support plan for the next ten minutes using all current venue signals.',
       role: 'organizer',
       language: 'English'
     });
@@ -62,7 +62,7 @@ describe('geminiService', () => {
     );
 
     const answer = await askArenaMind({
-      prompt: 'Generate a staffing plan for the next hour using all current venue signals.',
+      prompt: 'Analyze staffing load for the next five minutes using venue telemetry signals.',
       role: 'organizer',
       language: 'English'
     });
@@ -76,7 +76,7 @@ describe('geminiService', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 500 }));
 
     const answer = await askArenaMind({
-      prompt: 'Generate a staffing plan for the next hour using all current venue signals.',
+      prompt: 'Create an operations plan for ingress staffing and safety over the next hour.',
       role: 'organizer',
       language: 'English'
     });

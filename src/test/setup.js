@@ -5,3 +5,11 @@ Object.defineProperty(globalThis, 'crypto', {
     randomUUID: () => `test-${Math.random().toString(16).slice(2)}`
   }
 });
+
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+globalThis.ResizeObserver = ResizeObserver;

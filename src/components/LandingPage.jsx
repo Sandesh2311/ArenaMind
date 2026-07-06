@@ -1,6 +1,9 @@
-import { ArrowRight, Building2, Cpu, ShieldCheck } from 'lucide-react';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
+import Building2 from 'lucide-react/dist/esm/icons/building-2';
+import Cpu from 'lucide-react/dist/esm/icons/cpu';
+import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
 import { APP_NAME, TAGLINE } from '../constants/app.js';
-import { architectureLayers, features, stats, testimonials } from '../data/stadiumData.js';
+import { architectureLayers, features, landingStats, testimonials } from '../data/landingData.js';
 import { MetricCard } from './ui/MetricCard.jsx';
 import { Section } from './ui/Section.jsx';
 
@@ -68,7 +71,7 @@ export function LandingPage() {
                 <span className="rounded-md bg-arena-mint/15 px-3 py-2 text-sm font-semibold text-arena-mint">Online</span>
               </div>
               <div className="mt-5 grid grid-cols-2 gap-3">
-                {stats.map((item) => (
+                {landingStats.map((item) => (
                   <MetricCard key={item.label} {...item} />
                 ))}
               </div>

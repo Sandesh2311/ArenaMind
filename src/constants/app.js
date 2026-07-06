@@ -1,20 +1,20 @@
 export const APP_NAME = 'ArenaMind AI';
 export const TAGLINE = 'AI Powered Smart Stadium Operations Platform';
 
-export const ROLES = [
+export const ROLES = Object.freeze([
   { id: 'fan', label: 'Fan' },
   { id: 'organizer', label: 'Organizer' },
   { id: 'volunteer', label: 'Volunteer' }
-];
+]);
 
-export const LANGUAGES = [
+export const LANGUAGES = Object.freeze([
   { code: 'en', label: 'English' },
   { code: 'hi', label: 'Hindi' },
   { code: 'es', label: 'Spanish' },
   { code: 'fr', label: 'French' },
   { code: 'pt', label: 'Portuguese' },
   { code: 'ar', label: 'Arabic' }
-];
+]);
 
 export const GEMINI_ENDPOINT =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';

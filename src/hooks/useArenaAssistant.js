@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react';
-import { askArenaMind } from '../services/geminiService.js';
 
-const starterMessages = {
+const starterMessages = Object.freeze({
   fan: 'Ask me about gates, seats, parking, food, washrooms, exits, or translation.',
   organizer: 'Ask for queue mitigation, incident triage, resource allocation, or emergency recommendations.',
   volunteer: 'Ask for task guidance, translation help, navigation, or escalation wording.'
-};
+});
 
 export function useArenaAssistant(role, language) {
   const [messages, setMessages] = useState([
@@ -19,6 +18,7 @@ export function useArenaAssistant(role, language) {
       setMessages((current) => [...current, userMessage]);
       setIsLoading(true);
 
+      const { askArenaMind } = await import('../services/geminiService.js');
       const answer = await askArenaMind({ prompt, role, language });
       setMessages((current) => [
         ...current,

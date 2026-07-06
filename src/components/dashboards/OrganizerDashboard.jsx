@@ -1,32 +1,56 @@
 import PropTypes from 'prop-types';
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis
-} from 'recharts';
+import { memo, useMemo } from 'react';
+import { AreaChart } from 'recharts/es6/chart/AreaChart';
+import { BarChart } from 'recharts/es6/chart/BarChart';
+import { Area } from 'recharts/es6/cartesian/Area';
+import { Bar } from 'recharts/es6/cartesian/Bar';
+import { CartesianGrid } from 'recharts/es6/cartesian/CartesianGrid';
+import { XAxis } from 'recharts/es6/cartesian/XAxis';
+import { YAxis } from 'recharts/es6/cartesian/YAxis';
+import { ResponsiveContainer } from 'recharts/es6/component/ResponsiveContainer';
+import { Tooltip } from 'recharts/es6/component/Tooltip';
 import { alerts, crowdZones, incidents, queueAnalytics, stats, volunteers } from '../../data/stadiumData.js';
 import { AIAssistant } from '../AIAssistant.jsx';
 import { MetricCard } from '../ui/MetricCard.jsx';
 
-const riskClassName = {
+const riskClassName = Object.freeze({
   High: 'text-arena-coral',
   Monitor: 'text-arena-gold',
   Stable: 'text-arena-mint'
-};
+});
 
-const alertClassName = {
+const alertClassName = Object.freeze({
   coral: 'text-arena-coral',
   cyan: 'text-arena-cyan',
   mint: 'text-arena-mint'
-};
+});
 
-export function OrganizerDashboard({ language, onLanguageChange }) {
+const tooltipStyle = Object.freeze({
+  background: '#0f172a',
+  border: '1px solid rgba(255,255,255,0.14)',
+  color: '#fff'
+});
+
+const barRadius = Object.freeze([6, 6, 0, 0]);
+
+const emergencyActions = Object.freeze([
+  'Open Gate D2 overflow lane',
+  'Dispatch Medic 2 to Bay 112',
+  'Broadcast multilingual crowd advisory',
+  'Lock vehicle ingress at Lot P1'
+]);
+
+function OrganizerDashboardComponent({ language, onLanguageChange }) {
+  const queueChartData = useMemo(() => queueAnalytics, []);
+  const volunteerResponseData = useMemo(
+    () =>
+      volunteers.map((volunteer) => ({
+        ...volunteer,
+        responseMinutes: Number.parseInt(volunteer.response, 10)
+      })),
+    []
+  );
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-4">
@@ -68,11 +92,11 @@ export function OrganizerDashboard({ language, onLanguageChange }) {
           </h3>
           <div className="mt-5 h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={queueAnalytics}>
+              <AreaChart data={queueChartData}>
                 <CartesianGrid stroke="rgba(255,255,255,0.08)" />
                 <XAxis dataKey="name" stroke="#cbd5e1" />
                 <YAxis stroke="#cbd5e1" />
-                <Tooltip contentStyle={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.14)', color: '#fff' }} />
+                <Tooltip contentStyle={tooltipStyle} />
                 <Area type="monotone" dataKey="GateA" stroke="#35d6ff" fill="#35d6ff33" />
                 <Area type="monotone" dataKey="GateB" stroke="#facc15" fill="#facc1533" />
                 <Area type="monotone" dataKey="GateD" stroke="#fb7185" fill="#fb718533" />
@@ -135,12 +159,12 @@ export function OrganizerDashboard({ language, onLanguageChange }) {
           </h3>
           <div className="mt-5 h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={volunteers}>
+              <BarChart data={volunteerResponseData}>
                 <CartesianGrid stroke="rgba(255,255,255,0.08)" />
                 <XAxis dataKey="name" stroke="#cbd5e1" />
                 <YAxis stroke="#cbd5e1" />
-                <Tooltip contentStyle={{ background: '#0f172a', border: '1px solid rgba(255,255,255,0.14)', color: '#fff' }} />
-                <Bar dataKey={(item) => Number.parseInt(item.response, 10)} name="Response minutes" fill="#4ade80" radius={[6, 6, 0, 0]} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Bar dataKey="responseMinutes" name="Response minutes" fill="#4ade80" radius={barRadius} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -151,17 +175,15 @@ export function OrganizerDashboard({ language, onLanguageChange }) {
             Emergency control panel
           </h3>
           <div className="mt-5 grid gap-3">
-            {['Open Gate D2 overflow lane', 'Dispatch Medic 2 to Bay 112', 'Broadcast multilingual crowd advisory', 'Lock vehicle ingress at Lot P1'].map(
-              (action) => (
-                <button
-                  key={action}
-                  type="button"
-                  className="min-h-12 rounded-md border border-white/10 bg-white/5 px-4 text-left font-semibold text-slate-100 transition hover:border-arena-cyan hover:bg-arena-cyan/10"
-                >
-                  {action}
-                </button>
-              )
-            )}
+            {emergencyActions.map((action) => (
+              <button
+                key={action}
+                type="button"
+                className="min-h-12 rounded-md border border-white/10 bg-white/5 px-4 text-left font-semibold text-slate-100 transition hover:border-arena-cyan hover:bg-arena-cyan/10"
+              >
+                {action}
+              </button>
+            ))}
           </div>
         </section>
       </div>
@@ -169,7 +191,9 @@ export function OrganizerDashboard({ language, onLanguageChange }) {
   );
 }
 
-OrganizerDashboard.propTypes = {
+OrganizerDashboardComponent.propTypes = {
   language: PropTypes.string.isRequired,
   onLanguageChange: PropTypes.func.isRequired
 };
+
+export const OrganizerDashboard = memo(OrganizerDashboardComponent);

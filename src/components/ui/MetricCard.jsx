@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 
-const toneMap = {
+const toneMap = Object.freeze({
   cyan: 'text-arena-cyan',
   mint: 'text-arena-mint',
   gold: 'text-arena-gold',
   coral: 'text-arena-coral'
-};
+});
 
-export function MetricCard({ label, value, trend, tone = 'cyan' }) {
+function MetricCardComponent({ label, value, trend, tone = 'cyan' }) {
   return (
     <article className="glass rounded-lg p-5 transition duration-300 hover:-translate-y-1 hover:shadow-glow">
       <p className="text-sm text-slate-300">{label}</p>
@@ -19,9 +20,11 @@ export function MetricCard({ label, value, trend, tone = 'cyan' }) {
   );
 }
 
-MetricCard.propTypes = {
+MetricCardComponent.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   trend: PropTypes.string.isRequired,
   tone: PropTypes.oneOf(['cyan', 'mint', 'gold', 'coral'])
 };
+
+export const MetricCard = memo(MetricCardComponent);

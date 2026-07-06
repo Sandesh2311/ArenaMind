@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 import { fanTools, matchSchedule, routeCards } from '../../data/stadiumData.js';
 import { AIAssistant } from '../AIAssistant.jsx';
 
-export function FanDashboard({ language, onLanguageChange }) {
+function FanDashboardComponent({ language, onLanguageChange }) {
   return (
     <div className="space-y-6">
       <AIAssistant role="fan" language={language} onLanguageChange={onLanguageChange} />
@@ -71,7 +72,9 @@ export function FanDashboard({ language, onLanguageChange }) {
   );
 }
 
-FanDashboard.propTypes = {
+FanDashboardComponent.propTypes = {
   language: PropTypes.string.isRequired,
   onLanguageChange: PropTypes.func.isRequired
 };
+
+export const FanDashboard = memo(FanDashboardComponent);

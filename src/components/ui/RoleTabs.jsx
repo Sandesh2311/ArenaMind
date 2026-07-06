@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 import { ROLES } from '../../constants/app.js';
 
-export function RoleTabs({ activeRole, onChange }) {
+function RoleTabsComponent({ activeRole, onChange }) {
   return (
     <div className="glass inline-flex rounded-lg p-1" role="tablist" aria-label="Dashboard role">
       {ROLES.map((role) => (
@@ -22,7 +23,9 @@ export function RoleTabs({ activeRole, onChange }) {
   );
 }
 
-RoleTabs.propTypes = {
+RoleTabsComponent.propTypes = {
   activeRole: PropTypes.oneOf(['fan', 'organizer', 'volunteer']).isRequired,
   onChange: PropTypes.func.isRequired
 };
+
+export const RoleTabs = memo(RoleTabsComponent);

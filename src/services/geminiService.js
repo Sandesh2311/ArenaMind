@@ -2,6 +2,8 @@ import { GEMINI_ENDPOINT, SYSTEM_CONTEXT } from '../constants/app.js';
 import { buildIntelligentFallback, getLocalResponse } from './fallbackResponses.js';
 import { validatePrompt } from '../utils/validation.js';
 
+const geminiResponseCache = new Map();
+
 /**
  * Send complex prompts to Gemini while preserving an offline-first stadium FAQ path.
  * @param {{prompt: string, role: 'fan'|'organizer'|'volunteer', language: string}} params
@@ -13,9 +15,17 @@ export async function askArenaMind({ prompt, role, language }) {
     return { text: validation.error, source: 'fallback', error: validation.error };
   }
 
+  const requestCacheKey = `${role}:${language}:${validation.value.toLowerCase()}`;
+  const cached = geminiResponseCache.get(requestCacheKey);
+  if (cached) {
+    return cached;
+  }
+
   const local = getLocalResponse(validation.value, role);
   if (local.source === 'local') {
-    return { text: local.text, source: 'local' };
+    const response = { text: local.text, source: 'local' };
+    geminiResponseCache.set(requestCacheKey, response);
+    return response;
   }
 
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
@@ -60,12 +70,16 @@ export async function askArenaMind({ prompt, role, language }) {
       throw new Error('Gemini returned an empty response.');
     }
 
-    return { text, source: 'gemini' };
+    const answer = { text, source: 'gemini' };
+    geminiResponseCache.set(requestCacheKey, answer);
+    return answer;
   } catch (error) {
-    return {
+    const response = {
       text: buildIntelligentFallback(validation.value, role),
       source: 'fallback',
       error: error instanceof Error ? error.message : 'Unknown Gemini error.'
     };
+    geminiResponseCache.set(requestCacheKey, response);
+    return response;
   }
 }
