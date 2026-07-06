@@ -1,0 +1,67 @@
+
+> arenamind-ai@1.0.0 dev
+> vite --host 0.0.0.0 --port 5173
+
+
+  [32m[1mVITE[22m v8.1.3[39m  [2mready in [0m[1m461[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://10.137.32.156:[1m5173[22m/[39m
+[2m6:41:19 PM[22m [36m[1m[vite][22m[39m [32m.env.local changed, restarting server...[39m
+[2m6:41:19 PM[22m [36m[1m[vite][22m[39m server restarted.
+[2m6:41:27 PM[22m [36m[1m[vite][22m[39m [32m.env.local changed, restarting server...[39m
+[2m6:41:27 PM[22m [36m[1m[vite][22m[39m server restarted.
+[2m6:41:32 PM[22m [36m[1m[vite][22m[39m [32m.env.local changed, restarting server...[39m
+[2m6:41:32 PM[22m [36m[1m[vite][22m[39m server restarted.
+[2m6:41:49 PM[22m [36m[1m[vite][22m[39m [32m.env.local changed, restarting server...[39m
+[2m6:41:49 PM[22m [36m[1m[vite][22m[39m server restarted.
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/App.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/AIAssistant.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/services/fallbackResponses.js.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/services/geminiService.js.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/services/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/data/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/data/stadiumData.js.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/LandingPage.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/dashboards/FanDashboard.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/dashboards/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/dashboards/OrganizerDashboard.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/dashboards/VolunteerDashboard.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/ui/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/ui/MetricCard.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/ui/RoleTabs.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/ui/Section.jsx.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/hooks/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/hooks/useArenaAssistant.js.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/constants/app.js.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/constants/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/utils/index.html[22m
+[2m6:42:19 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/utils/validation.js.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/App.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/AIAssistant.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/LandingPage.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/dashboards/FanDashboard.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/dashboards/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/dashboards/OrganizerDashboard.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/dashboards/VolunteerDashboard.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/ui/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/ui/MetricCard.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/ui/RoleTabs.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/components/ui/Section.jsx.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/constants/app.js.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/constants/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/data/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/data/stadiumData.js.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/hooks/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/hooks/useArenaAssistant.js.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/services/fallbackResponses.js.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/services/geminiService.js.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/services/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/utils/index.html[22m
+[2m6:42:24 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2mcoverage/src/utils/validation.js.html[22m
